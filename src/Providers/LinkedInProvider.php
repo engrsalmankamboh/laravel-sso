@@ -42,11 +42,12 @@ class LinkedInProvider implements SocialProvider
 
         return 'https://www.linkedin.com/oauth/v2/authorization?'.http_build_query($params);
     }
-
+    
     public function loginUsingCode(string $code, string $platform = 'web'): array
     {
         $this->assertConfigured(['client_id','client_secret','redirect']);
         $http = new Client(['verify' => false]);
+
         if ($platform === 'web') {
             $redirectUri = $this->cfg['redirect'];
         } else {
@@ -76,36 +77,20 @@ class LinkedInProvider implements SocialProvider
             ]);
         }
 
-        // User info fetch
+        // ✅ Fetch userinfo from OIDC endpoint
         try {
-            $ui = json_decode((string)$http->get('https://api.linkedin.com/v2/me', [
+            $ui = json_decode((string)$http->get('https://api.linkedin.com/v2/userinfo', [
                 'headers' => [
                     'Authorization' => 'Bearer '.$token['access_token'],
                 ],
             ])->getBody(), true);
         } catch (GuzzleException $ge) {
             throw new OAuthHttpException('Failed contacting LinkedIn userinfo endpoint.', 0, [
-                'endpoint' => 'user','provider' => 'linkedin'
+                'endpoint' => 'userinfo','provider' => 'linkedin'
             ], $ge);
         }
 
-        // Fetch email address
-        $email = null;
-        try {
-            $emailResponse = json_decode((string)$http->get('https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))', [
-                'headers' => [
-                    'Authorization' => 'Bearer '.$token['access_token'],
-                ],
-            ])->getBody(), true);
-            
-            if (!empty($emailResponse['elements'][0]['handle~']['emailAddress'])) {
-                $email = $emailResponse['elements'][0]['handle~']['emailAddress'];
-            }
-        } catch (GuzzleException $ge) {
-            // Email fetch failed, continue without it
-        }
-
-        if (empty($ui) || !isset($ui['id'])) {
+        if (empty($ui) || !isset($ui['sub'])) {
             throw new UserInfoFetchException('Failed to retrieve LinkedIn user information.', 0, [
                 'provider'=>'linkedin','userinfo_response'=>$this->safe($ui)
             ]);
@@ -119,18 +104,19 @@ class LinkedInProvider implements SocialProvider
                 'expires_in'   => $token['expires_in'] ?? null,
             ],
             'userinfo' => [
-                'id'             => $ui['id'] ?? null,
-                'email'          => $email,
-                'name'           => $ui['localizedFirstName'] . ' ' . $ui['localizedLastName'],
-                'first_name'     => $ui['localizedFirstName'] ?? null,
-                'last_name'      => $ui['localizedLastName'] ?? null,
-                'avatar'         => null, // LinkedIn doesn't provide avatar in basic profile
-                'email_verified' => !empty($email),
-                'profile_url'    => 'https://www.linkedin.com/in/' . ($ui['vanityName'] ?? ''),
+                'id'             => $ui['sub'] ?? null,
+                'email'          => $ui['email'] ?? null,
+                'name'           => $ui['name'] ?? null,
+                'first_name'     => $ui['given_name'] ?? null,
+                'last_name'      => $ui['family_name'] ?? null,
+                'avatar'         => $ui['picture'] ?? null,
+                'email_verified' => $ui['email_verified'] ?? false,
+                'profile_url'    => null, // OIDC me profile_url directly nahi milta
             ],
             'raw' => ['token' => $this->safe($token), 'userinfo' => $this->safe($ui)],
         ];
     }
+
 
     private function assertConfigured(array $required): void
     {

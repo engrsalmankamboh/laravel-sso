@@ -33,7 +33,7 @@ return [
             'client_id'     => env('SSO_LINKEDIN_CLIENT_ID'),
             'client_secret' => env('SSO_LINKEDIN_CLIENT_SECRET'),
             'redirect'      => env('SSO_LINKEDIN_REDIRECT'),
-            'scopes'        => 'r_liteprofile r_emailaddress',
+            'scopes'        => 'openid,profile,email',
         ],
         'twitter' => [
             'client_id'     => env('SSO_TWITTER_CLIENT_ID'),
