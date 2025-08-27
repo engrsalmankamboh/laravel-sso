@@ -47,7 +47,11 @@ class AppleProvider implements SocialProvider
     {
         $this->assertConfigured(['client_id','team_id','key_id','private_key','redirect']);
         $http = new Client(['verify' => false]);
-        $redirect = $this->cfg['redirect'].'?'.http_build_query(['platform' => $platform]);
+        if ($platform === 'web') {
+            $redirect = $this->cfg['redirect'];
+        } else {
+            $redirect = $this->cfg['redirect'].'?'.http_build_query(['platform' => $platform]);
+        }
 
         // Token exchange
         try {

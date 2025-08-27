@@ -44,9 +44,13 @@ class FacebookProvider implements SocialProvider
     public function loginUsingCode(string $code, string $platform = 'web'): array
     {
         $this->assertConfigured(['client_id','client_secret','redirect']);
-        $redirect = $this->cfg['redirect'].'?'.http_build_query(['platform' => $platform]);
         $v = $this->cfg['api_version'] ?? 'v18.0';
         $http = new Client(['verify' => false]);
+        if ($platform === 'web') {
+            $redirect = $this->cfg['redirect'];
+        } else {
+            $redirect = $this->cfg['redirect'].'?'.http_build_query(['platform' => $platform]);
+        }
 
         // Token exchange
         try {

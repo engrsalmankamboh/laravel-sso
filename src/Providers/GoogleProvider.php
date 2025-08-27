@@ -48,8 +48,12 @@ class GoogleProvider implements SocialProvider
     public function loginUsingCode(string $code, string $platform = 'web'): array
     {
         $this->assertConfigured(['client_id','client_secret','redirect']);
-        $redirectUri = $this->cfg['redirect'].'?'.http_build_query(['platform' => $platform]);
         $http = new Client(['verify' => false]);
+        if ($platform === 'web') {
+            $redirectUri = $this->cfg['redirect'];
+        } else {
+            $redirectUri = $this->cfg['redirect'].'?'.http_build_query(['platform' => $platform]);
+        }
 
         try {
             $token = json_decode((string)$http->post('https://oauth2.googleapis.com/token', [

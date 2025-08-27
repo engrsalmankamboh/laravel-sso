@@ -1,7 +1,7 @@
 <?php return array(
     'root' => array(
         'name' => 'muhammadsalman/laravel-sso',
-        'pretty_version' => '1.0.0+no-version-set',
+        'pretty_version' => '1.0.0',
         'version' => '1.0.0.0',
         'reference' => null,
         'type' => 'library',
@@ -485,7 +485,7 @@
             ),
         ),
         'muhammadsalman/laravel-sso' => array(
-            'pretty_version' => '1.0.0+no-version-set',
+            'pretty_version' => '1.0.0',
             'version' => '1.0.0.0',
             'reference' => null,
             'type' => 'library',
