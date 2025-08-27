@@ -1,0 +1,34 @@
+{
+    "name": "muhammadsalman/laravel-sso",
+    "description": "Social SSO for Laravel (Google/Apple/Facebook/etc...) with platform-aware flows",
+    "type": "library",
+    "version": "1.0.0",
+    "require": {
+        "illuminate/support": "^10.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "ext-openssl": "*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpunit/phpunit": "^10.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Muhammadsalman\\LaravelSso\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Muhammad Salman"
+        }
+    ],
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Muhammadsalman\\LaravelSso\\LaravelSSOServiceProvider"
+            ]
+        }
+    }
+}
