@@ -69,6 +69,7 @@ class MicrosoftProvider implements SocialProvider
                 ],
             ])->getBody(), true);
         } catch (GuzzleException $ge) {
+            dd($ge);
             throw new OAuthHttpException('Failed contacting Microsoft token endpoint.', 0, [
                 'endpoint' => 'token','provider' => 'microsoft'
             ], $ge);
