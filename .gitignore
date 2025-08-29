@@ -1,0 +1,19 @@
+# Composer dependencies
+/vendor/
+
+# Composer lock file (recommended to ignore in packages)
+composer.lock
+
+# PHPUnit cache
+.phpunit.result.cache
+
+# PHP-CS-Fixer cache
+.php-cs-fixer.cache
+
+# IDE / Editor files
+/.idea/
+/.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
