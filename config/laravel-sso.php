@@ -39,7 +39,7 @@ return [
             'client_id'     => env('SSO_TWITTER_CLIENT_ID'),
             'client_secret' => env('SSO_TWITTER_CLIENT_SECRET'),
             'redirect'      => env('SSO_TWITTER_REDIRECT'),
-            'scopes'        => 'tweet.read users.read offline.access',
+            'scopes'        => 'tweet.read users.read offline.access'
         ],
         'discord' => [
             'client_id'     => env('SSO_DISCORD_CLIENT_ID'),
