@@ -2,7 +2,7 @@
     "name": "muhammadsalman/laravel-sso",
     "description": "Social SSO for Laravel (Google/Apple/Facebook/etc...) with platform-aware flows",
     "type": "library",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "require": {
         "illuminate/support": "^10.0",
         "guzzlehttp/guzzle": "^7.0",
